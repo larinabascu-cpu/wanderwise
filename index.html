@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WanderWise — Budget Travel Guides</title>
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Cabinet+Grotesk:wght@300;400;500;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:     #0B6E4F;
+  --green-l:   #12926A;
+  --green-xl:  #1DB98A;
+  --mint:      #CBFCE8;
+  --blue:      #0A4D8C;
+  --blue-l:    #1A72C8;
+  --sky:       #D6EEFF;
+  --white:     #FFFFFF;
+  --off:       #F4FAF7;
+  --ink:       #0A1A12;
+  --gray:      #5A7A6A;
+  --mid:       #C2D9CC;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--white);color:var(--ink);font-family:'Cabinet Grotesk',sans-serif;overflow-x:hidden;cursor:none;}
+
+/* CURSOR */
+.cur{position:fixed;width:10px;height:10px;background:var(--green-xl);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .15s,height .15s;mix-blend-mode:multiply;}
+.cur-r{position:fixed;width:32px;height:32px;border:1.5px solid var(--green);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all .1s ease-out;}
+
+/* NAV */
+nav{position:fixed;top:0;width:100%;z-index:500;padding:16px 48px;display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.94);backdrop-filter:blur(20px);border-bottom:1px solid var(--mid);}
+.logo{font-family:'Clash Display',sans-serif;font-weight:700;font-size:1.5rem;letter-spacing:-0.5px;color:var(--green);display:flex;align-items:center;gap:8px;}
+.logo-dot{width:8px;height:8px;background:var(--blue-l);border-radius:50%;animation:pulse-dot 2s ease-in-out infinite;}
+@keyframes pulse-dot{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(0.6);opacity:0.5;}}
+.nav-links{display:flex;gap:32px;list-style:none;align-items:center;}
+.nav-links a{font-size:.82rem;font-weight:700;text-decoration:none;color:var(--gray);letter-spacing:.08em;text-transform:uppercase;transition:color .2s;}
+.nav-links a:hover{color:var(--green);}
+.nav-btn{background:var(--green);color:var(--white)!important;padding:10px 22px;border-radius:100px;transition:all .2s!important;}
+.nav-btn:hover{background:var(--blue)!important;transform:translateY(-1px)!important;box-shadow:0 8px 20px rgba(11,110,79,.3)!important;}
+
+/* HERO */
+.hero{min-height:100vh;padding:110px 48px 80px;position:relative;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 70% 70% at 80% 30%,rgba(29,185,138,.08) 0%,transparent 60%),radial-gradient(ellipse 50% 50% at 10% 80%,rgba(10,77,140,.06) 0%,transparent 60%),var(--off);z-index:0;}
+.hero-bg::before{content:'';position:absolute;top:60px;right:80px;width:500px;height:500px;background:conic-gradient(from 0deg,rgba(11,110,79,.06),rgba(10,77,140,.06),rgba(29,185,138,.04),rgba(11,110,79,.06));border-radius:50%;animation:spin-slow 20s linear infinite;pointer-events:none;}
+@keyframes spin-slow{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+.hero-content{position:relative;z-index:1;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--mint);border:1.5px solid rgba(11,110,79,.2);padding:6px 16px;border-radius:100px;font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--green);margin-bottom:24px;animation:fadeUp .6s ease both;}
+.badge-pip{width:6px;height:6px;background:var(--green-xl);border-radius:50%;animation:pulse-dot 2s ease-in-out infinite;}
+.hero h1{font-family:'Clash Display',sans-serif;font-size:clamp(3rem,5.5vw,5.5rem);font-weight:700;line-height:.95;letter-spacing:-2.5px;margin-bottom:24px;animation:fadeUp .7s ease .1s both;}
+.hero h1 .gr{background:linear-gradient(135deg,var(--green) 0%,var(--green-xl) 50%,var(--blue-l) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-sub{font-size:1.05rem;line-height:1.7;color:var(--gray);max-width:460px;margin-bottom:36px;font-weight:400;animation:fadeUp .7s ease .2s both;}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;animation:fadeUp .7s ease .3s both;}
+.btn-main{background:var(--green);color:var(--white);padding:15px 32px;border-radius:100px;font-size:.92rem;font-weight:700;text-decoration:none;transition:all .25s;display:inline-block;font-family:'Cabinet Grotesk',sans-serif;}
+.btn-main:hover{background:var(--blue);transform:translateY(-3px);box-shadow:0 12px 30px rgba(11,110,79,.35);}
+.btn-ghost{border:2px solid var(--green);color:var(--green);padding:13px 30px;border-radius:100px;font-size:.92rem;font-weight:700;text-decoration:none;transition:all .25s;display:inline-block;font-family:'Cabinet Grotesk',sans-serif;}
+.btn-ghost:hover{background:var(--green);color:var(--white);transform:translateY(-3px);}
+.hero-stats{display:flex;gap:32px;margin-top:52px;padding-top:40px;border-top:1.5px solid var(--mid);animation:fadeUp .7s ease .4s both;}
+.stat-num{font-family:'Clash Display',sans-serif;font-size:2.2rem;font-weight:700;display:block;line-height:1;}
+.stat:nth-child(1) .stat-num{color:var(--green);}
+.stat:nth-child(2) .stat-num{color:var(--blue-l);}
+.stat:nth-child(3) .stat-num{color:var(--green-xl);}
+.stat:nth-child(4) .stat-num{color:var(--blue);}
+.stat-label{font-size:.72rem;color:var(--gray);text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin-top:4px;display:block;}
+
+/* HERO VISUAL */
+.hero-visual{position:relative;z-index:1;height:580px;}
+.hv-card-main{position:absolute;top:0;right:0;width:320px;background:var(--ink);border-radius:20px;overflow:hidden;box-shadow:20px 20px 60px rgba(10,26,18,.25),0 0 0 1px rgba(29,185,138,.1);}
+.hv-card-img{height:200px;display:flex;align-items:center;justify-content:center;font-size:4rem;position:relative;background:linear-gradient(135deg,#0B6E4F,#1DB98A,#1A72C8);}
+.hv-card-img-label{position:absolute;bottom:14px;left:16px;font-family:'Clash Display',sans-serif;font-size:1.6rem;font-weight:700;color:rgba(255,255,255,.9);}
+.hv-card-body{padding:20px;}
+.hv-card-tag{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--green-xl);letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px;}
+.hv-card-title{font-family:'Clash Display',sans-serif;font-size:1.1rem;font-weight:600;color:var(--white);margin-bottom:14px;line-height:1.25;}
+.hv-card-footer{display:flex;justify-content:space-between;align-items:center;}
+.hv-price{font-family:'Clash Display',sans-serif;font-size:1.6rem;font-weight:700;color:var(--mint);}
+.hv-buy{background:var(--green-xl);color:var(--ink);border:none;padding:9px 18px;border-radius:100px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;}
+.hv-float-1{position:absolute;bottom:160px;left:-10px;width:200px;background:var(--white);border-radius:16px;padding:16px;box-shadow:10px 10px 30px rgba(10,26,18,.12);border-left:3px solid var(--green-xl);}
+.hv-float-label{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px;}
+.hv-float-text{font-family:'Clash Display',sans-serif;font-size:1rem;font-weight:600;color:var(--ink);line-height:1.3;}
+.hv-float-sub{font-size:.72rem;color:var(--gray);margin-top:3px;}
+.hv-float-2{position:absolute;top:260px;right:-20px;width:170px;background:var(--sky);border-radius:16px;padding:14px;box-shadow:8px 8px 24px rgba(10,77,140,.12);border-bottom:3px solid var(--blue-l);}
+.hv-float-2 .hv-float-label{color:var(--blue);}
+.hv-float-2 .hv-float-text{font-size:.88rem;}
+.hv-dot-grid{position:absolute;bottom:40px;right:20px;width:120px;height:80px;background-image:radial-gradient(var(--mid) 1.5px,transparent 1.5px);background-size:12px 12px;opacity:.6;border-radius:8px;}
+
+/* MARQUEE */
+.marquee-wrap{background:var(--green);padding:13px 0;overflow:hidden;transform:rotate(-.8deg) scaleX(1.04);margin:-6px 0;position:relative;z-index:2;}
+.marquee-track{display:flex;white-space:nowrap;animation:marquee 20s linear infinite;}
+.marquee-item{font-family:'Clash Display',sans-serif;font-size:.78rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--mint);padding:0 20px;display:inline-flex;align-items:center;gap:14px;}
+.m-sep{color:rgba(203,252,232,.4);font-size:1.1em;}
+@keyframes marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* SECTIONS */
+.section{padding:100px 48px;position:relative;}
+.eyebrow{font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;display:inline-flex;align-items:center;gap:10px;margin-bottom:14px;}
+.eyebrow::before{content:'';width:18px;height:2px;border-radius:2px;background:currentColor;display:inline-block;}
+.ey-green{color:var(--green);}
+.ey-blue{color:var(--blue-l);}
+.ey-mint{color:var(--green-xl);}
+.sec-title{font-family:'Clash Display',sans-serif;font-size:clamp(2.2rem,4.5vw,3.8rem);font-weight:700;line-height:1.0;letter-spacing:-1.5px;margin-bottom:14px;}
+.sec-sub{font-size:.95rem;color:var(--gray);max-width:480px;line-height:1.7;font-weight:400;}
+
+/* CARDS */
+.shop-bg{background:var(--off);}
+.shop-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:48px;gap:24px;flex-wrap:wrap;}
+.filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;}
+.pill{padding:8px 18px;border-radius:100px;font-size:.75rem;font-weight:700;border:1.5px solid var(--mid);color:var(--gray);cursor:pointer;transition:all .2s;background:transparent;font-family:'Cabinet Grotesk',sans-serif;}
+.pill.active,.pill:hover{border-color:var(--green);color:var(--green);background:rgba(11,110,79,.06);}
+.cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+.card{background:var(--white);border-radius:20px;overflow:hidden;border:1.5px solid var(--mid);transition:transform .3s,border-color .3s,box-shadow .3s;cursor:pointer;}
+.card:hover{transform:translateY(-8px);border-color:var(--green-xl);box-shadow:0 20px 50px rgba(11,110,79,.12);}
+.card-feat{grid-column:span 2;}
+.card-thumb{height:220px;position:relative;display:flex;align-items:flex-end;}
+.card-feat .card-thumb{height:270px;}
+.thumb-bg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:4.5rem;transition:transform .5s;}
+.card:hover .thumb-bg{transform:scale(1.05);}
+.g1{background:linear-gradient(135deg,#0B6E4F 0%,#1DB98A 50%,#1A72C8 100%);}
+.g2{background:linear-gradient(135deg,#1A72C8 0%,#0A4D8C 40%,#0B6E4F 100%);}
+.g3{background:linear-gradient(135deg,#12926A 0%,#CBFCE8 50%,#1A72C8 100%);}
+.g4{background:linear-gradient(135deg,#0A4D8C 0%,#1DB98A 60%,#12926A 100%);}
+.g5{background:linear-gradient(135deg,#1DB98A 0%,#0B6E4F 40%,#0A4D8C 100%);}
+.g6{background:linear-gradient(135deg,#1A72C8 0%,#0B6E4F 50%,#1DB98A 100%);}
+.thumb-label{position:absolute;bottom:0;left:0;right:0;padding:50px 18px 16px;background:linear-gradient(transparent,rgba(10,26,18,.8));z-index:1;}
+.thumb-country{font-family:'Clash Display',sans-serif;font-size:1.5rem;font-weight:700;color:var(--white);}
+.card-new{position:absolute;top:12px;right:12px;background:var(--green-xl);color:var(--ink);font-family:'DM Mono',monospace;font-size:.6rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:100px;z-index:2;}
+.card-body{padding:18px;}
+.card-tags{display:flex;gap:6px;margin-bottom:10px;}
+.ctag{font-family:'DM Mono',monospace;font-size:.62rem;font-weight:500;padding:3px 10px;border-radius:100px;letter-spacing:.06em;}
+.ctag-g{background:rgba(11,110,79,.1);color:var(--green);}
+.ctag-b{background:rgba(26,114,200,.1);color:var(--blue-l);}
+.card-title{font-family:'Clash Display',sans-serif;font-size:1rem;font-weight:600;line-height:1.2;margin-bottom:7px;letter-spacing:-.2px;}
+.card-desc{font-size:.78rem;color:var(--gray);line-height:1.6;margin-bottom:13px;}
+.card-chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px;}
+.chip{font-family:'DM Mono',monospace;font-size:.62rem;padding:3px 9px;background:var(--off);border:1px solid var(--mid);border-radius:100px;color:var(--gray);}
+.card-footer{display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1.5px solid var(--mid);}
+.card-price{font-family:'Clash Display',sans-serif;font-size:1.5rem;font-weight:700;color:var(--ink);}
+.price-note{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--gray);margin-top:2px;}
+.buy-btn{background:var(--green);color:var(--white);border:none;padding:10px 20px;border-radius:100px;font-size:.8rem;font-weight:700;font-family:'Cabinet Grotesk',sans-serif;cursor:pointer;transition:all .2s;}
+.buy-btn:hover{background:var(--blue);transform:scale(1.04);}
+
+/* HOW IT WORKS */
+.how-bg{background:var(--ink);}
+.how-bg .eyebrow{color:var(--green-xl);}
+.how-bg .eyebrow::before{background:var(--green-xl);}
+.how-bg .sec-title{color:var(--white);}
+.how-bg .sec-sub{color:rgba(255,255,255,.5);}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.06);border-radius:20px;overflow:hidden;margin-top:56px;}
+.step{background:var(--ink);padding:36px 28px;transition:background .3s;position:relative;}
+.step:hover{background:rgba(11,110,79,.1);}
+.step-n{font-family:'Clash Display',sans-serif;font-size:4.5rem;font-weight:700;color:rgba(255,255,255,.04);position:absolute;top:14px;right:14px;line-height:1;letter-spacing:-3px;}
+.step-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:18px;}
+.s1 .step-icon{background:rgba(29,185,138,.15);}
+.s2 .step-icon{background:rgba(26,114,200,.15);}
+.s3 .step-icon{background:rgba(11,110,79,.15);}
+.s4 .step-icon{background:rgba(203,252,232,.1);}
+.step-title{font-family:'Clash Display',sans-serif;font-size:1.05rem;font-weight:600;color:var(--white);margin-bottom:10px;}
+.step-desc{font-size:.8rem;color:rgba(255,255,255,.45);line-height:1.7;}
+
+/* INSIDE SECTION */
+.inside-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;margin-top:56px;}
+.inside-list{display:flex;flex-direction:column;gap:2px;}
+.inside-item{display:flex;align-items:flex-start;gap:14px;padding:16px;border-radius:14px;transition:background .2s;}
+.inside-item:hover{background:var(--off);}
+.ii-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.i1{background:rgba(11,110,79,.1);}
+.i2{background:rgba(10,77,140,.1);}
+.i3{background:rgba(29,185,138,.1);}
+.i4{background:rgba(26,114,200,.1);}
+.i5{background:rgba(11,110,79,.08);}
+.ii-title{font-family:'Clash Display',sans-serif;font-size:.95rem;font-weight:600;margin-bottom:4px;}
+.ii-desc{font-size:.78rem;color:var(--gray);line-height:1.6;}
+.pdf-prev{background:var(--ink);border-radius:24px;overflow:hidden;border:1.5px solid rgba(29,185,138,.15);box-shadow:0 30px 70px rgba(10,26,18,.2);}
+.pdf-head{background:linear-gradient(135deg,var(--green),var(--green-xl),var(--blue-l));padding:28px 24px;position:relative;overflow:hidden;}
+.pdf-head::after{content:'🌿';position:absolute;right:-8px;bottom:-8px;font-size:4.5rem;opacity:.18;}
+.pdf-brand{font-family:'DM Mono',monospace;font-size:.6rem;color:rgba(255,255,255,.6);letter-spacing:.18em;text-transform:uppercase;margin-bottom:8px;}
+.pdf-htitle{font-family:'Clash Display',sans-serif;font-size:1.5rem;font-weight:700;color:var(--white);line-height:1.1;}
+.pdf-hsub{font-size:.78rem;color:rgba(255,255,255,.65);margin-top:5px;}
+.pdf-body{padding:22px 24px;}
+.pdf-sec-label{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--green-xl);letter-spacing:.15em;text-transform:uppercase;margin-bottom:12px;}
+.pdf-day{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.06);}
+.pdf-dot{width:8px;height:8px;border-radius:50%;margin-top:4px;flex-shrink:0;}
+.pd1{background:var(--green-xl);}
+.pd2{background:var(--blue-l);}
+.pd3{background:var(--mint);}
+.pd4{background:var(--sky);}
+.pdf-dtime{font-family:'DM Mono',monospace;font-size:.6rem;color:rgba(255,255,255,.35);margin-bottom:2px;}
+.pdf-dtitle{font-size:.84rem;font-weight:600;color:var(--white);margin-bottom:2px;}
+.pdf-dcost{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--green-xl);}
+.pdf-foot{display:flex;gap:6px;flex-wrap:wrap;padding:14px 24px 22px;border-top:1px solid rgba(255,255,255,.06);}
+.pdf-chip{font-family:'DM Mono',monospace;font-size:.6rem;padding:3px 10px;border:1px solid rgba(255,255,255,.1);border-radius:100px;color:rgba(255,255,255,.45);}
+
+/* REVIEWS */
+.testi-bg{background:var(--off);}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:48px;}
+.testi-card{background:var(--white);border:1.5px solid var(--mid);border-radius:20px;padding:28px;transition:border-color .3s,transform .3s;}
+.testi-card:hover{border-color:var(--green-xl);transform:translateY(-4px);}
+.stars{display:flex;gap:2px;margin-bottom:14px;}
+.star{color:#F5A623;font-size:.85rem;}
+.testi-text{font-size:.88rem;line-height:1.7;color:var(--ink);margin-bottom:18px;font-style:italic;font-weight:400;}
+.testi-auth{display:flex;align-items:center;gap:10px;}
+.testi-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;}
+.av1{background:linear-gradient(135deg,var(--green),var(--green-xl));}
+.av2{background:linear-gradient(135deg,var(--blue),var(--blue-l));}
+.av3{background:linear-gradient(135deg,var(--green-xl),var(--blue-l));}
+.testi-name{font-size:.84rem;font-weight:700;}
+.testi-trip{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--gray);}
+
+/* NEWSLETTER */
+.nl-section{background:linear-gradient(135deg,var(--green) 0%,var(--blue) 100%);padding:90px 48px;text-align:center;position:relative;overflow:hidden;}
+.nl-section::before{content:'';position:absolute;top:-100px;right:-100px;width:400px;height:400px;background:rgba(29,185,138,.15);border-radius:50%;pointer-events:none;}
+.nl-section::after{content:'';position:absolute;bottom:-80px;left:-80px;width:300px;height:300px;background:rgba(10,77,140,.2);border-radius:50%;pointer-events:none;}
+.nl-section .eyebrow{color:rgba(203,252,232,.7);justify-content:center;}
+.nl-section .eyebrow::before{background:rgba(203,252,232,.5);}
+.nl-title{font-family:'Clash Display',sans-serif;font-size:clamp(2rem,5vw,3.8rem);font-weight:700;letter-spacing:-1.5px;color:var(--white);margin-bottom:14px;position:relative;z-index:1;}
+.nl-sub{font-size:.92rem;color:rgba(255,255,255,.65);margin-bottom:32px;position:relative;z-index:1;}
+.nl-form{display:flex;max-width:420px;margin:0 auto;background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.2);border-radius:100px;padding:5px 5px 5px 20px;position:relative;z-index:1;}
+.nl-input{flex:1;background:transparent;border:none;color:var(--white);font-size:.88rem;font-family:'Cabinet Grotesk',sans-serif;outline:none;}
+.nl-input::placeholder{color:rgba(255,255,255,.4);}
+.nl-btn{background:var(--white);color:var(--green);border:none;padding:12px 22px;border-radius:100px;font-size:.82rem;font-weight:700;font-family:'Cabinet Grotesk',sans-serif;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.nl-btn:hover{background:var(--mint);transform:scale(1.03);}
+.nl-note{font-family:'DM Mono',monospace;font-size:.65rem;color:rgba(255,255,255,.3);margin-top:12px;position:relative;z-index:1;}
+
+/* FOOTER */
+footer{background:#050E08;padding:60px 48px 28px;border-top:1px solid rgba(29,185,138,.1);}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:28px;}
+.f-logo{font-family:'Clash Display',sans-serif;font-weight:700;font-size:1.5rem;color:var(--green-xl);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.f-about{font-size:.82rem;color:rgba(255,255,255,.3);line-height:1.7;}
+.f-col h4{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:16px;}
+.f-col ul{list-style:none;}
+.f-col li{margin-bottom:9px;}
+.f-col a{font-size:.82rem;color:rgba(255,255,255,.45);text-decoration:none;transition:color .2s;}
+.f-col a:hover{color:var(--green-xl);}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;font-family:'DM Mono',monospace;font-size:.68rem;color:rgba(255,255,255,.2);}
+.socials{display:flex;gap:10px;}
+.soc{width:34px;height:34px;border:1px solid rgba(255,255,255,.1);border-radius:10px;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:.85rem;transition:all .2s;color:rgba(255,255,255,.4);}
+.soc:hover{border-color:var(--green-xl);color:var(--green-xl);}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+@media(max-width:900px){
+  nav{padding:14px 20px;}
+  .nav-links{display:none;}
+  .hero{grid-template-columns:1fr;padding:100px 20px 60px;}
+  .hero-visual{display:none;}
+  .section{padding:60px 20px;}
+  .cards-grid,.steps,.inside-grid,.testi-grid,.footer-top{grid-template-columns:1fr;}
+  .card-feat{grid-column:span 1;}
+  .steps{gap:2px;}
+}
+</style>
+</head>
+<body>
+
+<div class="cur" id="cur"></div>
+<div class="cur-r" id="curR"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="logo"><div class="logo-dot"></div>WanderWise</div>
+  <ul class="nav-links">
+    <li><a href="#shop">Guides</a></li>
+    <li><a href="#inside">What's Inside</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+    <li><a href="#shop" class="nav-btn">Get a Guide →</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-badge"><div class="badge-pip"></div>Real trips · Real budgets · Instant download</div>
+    <h1>The World<br>is <span class="gr">Yours</span><br>to Explore</h1>
+    <p class="hero-sub">Expert-crafted PDF travel guides for budget explorers. Clickable maps, local food spots, honest costs — built by someone who's actually been there.</p>
+    <div class="hero-actions">
+      <a href="#shop" class="btn-main">Browse Guides →</a>
+      <a href="#inside" class="btn-ghost">See what's inside</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-num">24+</span><span class="stat-label">Destinations</span></div>
+      <div class="stat"><span class="stat-num">£9</span><span class="stat-label">Starting from</span></div>
+      <div class="stat"><span class="stat-num">5K+</span><span class="stat-label">Travellers</span></div>
+      <div class="stat"><span class="stat-num">100%</span><span class="stat-label">Legit tips</span></div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hv-card-main">
+      <div class="hv-card-img">🌿<div class="hv-card-img-label">BALI</div></div>
+      <div class="hv-card-body">
+        <div class="hv-card-tag">✦ Featured Guide</div>
+        <div class="hv-card-title">10 Days in Bali on a Shoestring Budget</div>
+        <div class="hv-card-footer">
+          <div class="hv-price">$12.99</div>
+          <button class="hv-buy">Get PDF →</button>
+        </div>
+      </div>
+    </div>
+    <div class="hv-float-1">
+      <div class="hv-float-label">✓ Includes</div>
+      <div class="hv-float-text">Clickable Google Maps</div>
+      <div class="hv-float-sub">Every spot pinned & linked</div>
+    </div>
+    <div class="hv-float-2">
+      <div class="hv-float-label">✓ New Guide</div>
+      <div class="hv-float-text">Japan 7-Day Itinerary just dropped</div>
+    </div>
+    <div class="hv-dot-grid"></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item">Bali<span class="m-sep">✦</span></span><span class="marquee-item">Japan<span class="m-sep">✦</span></span><span class="marquee-item">Morocco<span class="m-sep">✦</span></span><span class="marquee-item">Dubai<span class="m-sep">✦</span></span><span class="marquee-item">Thailand<span class="m-sep">✦</span></span><span class="marquee-item">Italy<span class="m-sep">✦</span></span><span class="marquee-item">Vietnam<span class="m-sep">✦</span></span><span class="marquee-item">Portugal<span class="m-sep">✦</span></span><span class="marquee-item">Turkey<span class="m-sep">✦</span></span><span class="marquee-item">Mexico<span class="m-sep">✦</span></span>
+    <span class="marquee-item">Bali<span class="m-sep">✦</span></span><span class="marquee-item">Japan<span class="m-sep">✦</span></span><span class="marquee-item">Morocco<span class="m-sep">✦</span></span><span class="marquee-item">Dubai<span class="m-sep">✦</span></span><span class="marquee-item">Thailand<span class="m-sep">✦</span></span><span class="marquee-item">Italy<span class="m-sep">✦</span></span><span class="marquee-item">Vietnam<span class="m-sep">✦</span></span><span class="marquee-item">Portugal<span class="m-sep">✦</span></span><span class="marquee-item">Turkey<span class="m-sep">✦</span></span><span class="marquee-item">Mexico<span class="m-sep">✦</span></span>
+  </div>
+</div>
+
+<!-- SHOP -->
+<section class="section shop-bg" id="shop">
+  <div class="shop-header">
+    <div>
+      <div class="eyebrow ey-green">Digital Guides</div>
+      <h2 class="sec-title">Pick your<br>next adventure 🌍</h2>
+    </div>
+    <div>
+      <p class="sec-sub">Every guide is a complete trip plan — not just a list of things to Google.</p>
+      <div class="filter-row">
+        <button class="pill active">All</button>
+        <button class="pill">Under $100</button>
+        <button class="pill">1 Week+</button>
+        <button class="pill">Asia</button>
+        <button class="pill">Middle East</button>
+      </div>
+    </div>
+  </div>
+  <div class="cards-grid">
+
+    <div class="card card-feat">
+      <div class="card-thumb">
+        <div class="thumb-bg g3">🌴</div>
+        <div class="card-new">🔥 Bestseller</div>
+        <div class="thumb-label"><div class="thumb-country">Bali, Indonesia</div></div>
+      </div>
+      <div class="card-body">
+        <div class="card-tags"><span class="ctag ctag-g">Under £40/day</span><span class="ctag ctag-b">10 Days</span></div>
+        <div class="card-title">10 Days in Bali on a Shoestring Budget</div>
+        <div class="card-desc">Rice terraces, sacred temples, $3 massages and legendary surf breaks. The island that proves paradise doesn't have to cost the earth.</div>
+        <div class="card-chips"><span class="chip">🗺️ Google Maps</span><span class="chip">🛵 Scooter Routes</span><span class="chip">💰 Budget Table</span><span class="chip">🌅 Sunrise Spots</span><span class="chip">🍜 Food Guide</span><span class="chip">⚠️ Scam Alerts</span></div>
+        <div class="card-footer">
+          <div><div class="card-price">$12.99</div><div class="price-note">Instant PDF download</div></div>
+          <button class="buy-btn">Buy Now →</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-thumb">
+        <div class="thumb-bg g2">🗻</div>
+        <div class="thumb-label"><div class="thumb-country">Japan</div></div>
+      </div>
+      <div class="card-body">
+        <div class="card-tags"><span class="ctag ctag-b">~£80/day</span><span class="ctag ctag-g">7 Days</span></div>
+        <div class="card-title">One Week in Japan — Tokyo to Kyoto</div>
+        <div class="card-desc">Cherry blossoms, ramen alleys, bullet trains explained. Japan without the confusion.</div>
+        <div class="card-chips"><span class="chip">🚅 JR Pass Guide</span><span class="chip">🍣 Food Map</span><span class="chip">🗺️ City Maps</span></div>
+        <div class="card-footer">
+          <div><div class="card-price">$14.99</div><div class="price-note">Instant PDF download</div></div>
+          <button class="buy-btn">Buy Now →</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-thumb">
+        <div class="thumb-bg g4">🕌</div>
+        <div class="card-new">New ✨</div>
+        <div class="thumb-label"><div class="thumb-country">Morocco</div></div>
+      </div>
+      <div class="card-body">
+        <div class="card-tags"><span class="ctag ctag-g">Under £50/day</span><span class="ctag ctag-b">5 Days</span></div>
+        <div class="card-title">5 Days in Morocco — Marrakech & Desert</div>
+        <div class="card-desc">Sahara nights, souk haggling secrets and £3 tagines. Don't get ripped off — this guide has you covered.</div>
+        <div class="card-chips"><span class="chip">🐪 Desert Tips</span><span class="chip">🧭 Medina Map</span><span class="chip">💡 Scam Alerts</span></div>
+        <div class="card-footer">
+          <div><div class="card-price">$11.99</div><div class="price-note">Instant PDF download</div></div>
+          <button class="buy-btn">Buy Now →</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-thumb">
+        <div class="thumb-bg g1">🌆</div>
+        <div class="thumb-label"><div class="thumb-country">Dubai, UAE</div></div>
+      </div>
+      <div class="card-body">
+        <div class="card-tags"><span class="ctag ctag-g">Under $100</span><span class="ctag ctag-b">48 Hours</span></div>
+        <div class="card-title">48 Hours in Dubai Under $100</div>
+        <div class="card-desc">Free beaches, gold souks and a $2 shawarma — the real Dubai that most tourists miss completely.</div>
+        <div class="card-chips"><span class="chip">🚇 Metro Guide</span><span class="chip">🍽️ 15 Restaurants</span><span class="chip">📸 Photo Spots</span></div>
+        <div class="card-footer">
+          <div><div class="card-price">$9.99</div><div class="price-note">Instant PDF download</div></div>
+          <button class="buy-btn">Buy Now →</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-thumb">
+        <div class="thumb-bg g5">🏖️</div>
+        <div class="thumb-label"><div class="thumb-country">Thailand</div></div>
+      </div>
+      <div class="card-body">
+        <div class="card-tags"><span class="ctag ctag-b">~£30/day</span><span class="ctag ctag-g">2 Weeks</span></div>
+        <div class="card-title">2 Weeks Bangkok to the Islands</div>
+        <div class="card-desc">Street food, island hopping, temple trails. The classic Thai route done properly on a budget.</div>
+        <div class="card-chips"><span class="chip">⛵ Ferry Guide</span><span class="chip">🏝️ Island Picker</span></div>
+        <div class="card-footer">
+          <div><div class="card-price">$16.99</div><div class="price-note">Instant PDF download</div></div>
+          <button class="buy-btn">Buy Now →</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-thumb">
+        <div class="thumb-bg g6">🍕</div>
+        <div class="card-new">Hot 🌶️</div>
+        <div class="thumb-label"><div class="thumb-country">Italy</div></div>
+      </div>
+      <div class="card-body">
+        <div class="card-tags"><span class="ctag ctag-g">~£60/day</span><span class="ctag ctag-b">10 Days</span></div>
+        <div class="card-title">10 Days Italy — Rome to Amalfi</div>
+        <div class="card-desc">Skipping overpriced tourist menus and endless queues. The Italy locals actually love.</div>
+        <div class="card-chips"><span class="chip">🍝 Food Spots</span><span class="chip">🎟️ Free Museums</span></div>
+        <div class="card-footer">
+          <div><div class="card-price">$13.99</div><div class="price-note">Instant PDF download</div></div>
+          <button class="buy-btn">Buy Now →</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section how-bg">
+  <div class="eyebrow ey-mint">Simple process</div>
+  <h2 class="sec-title" style="color:var(--white)">How it works</h2>
+  <p class="sec-sub">From purchase to exploring in under 60 seconds.</p>
+  <div class="steps">
+    <div class="step s1"><div class="step-n">01</div><div class="step-icon">🛒</div><div class="step-title">Pick a destination</div><p class="step-desc">Browse guides by country, budget or trip length. Every guide is written from personal experience.</p></div>
+    <div class="step s2"><div class="step-n">02</div><div class="step-icon">⚡</div><div class="step-title">Instant PDF download</div><p class="step-desc">Pay securely. PDF hits your inbox in seconds. No account needed. Yours forever, offline-ready.</p></div>
+    <div class="step s3"><div class="step-n">03</div><div class="step-icon">📍</div><div class="step-title">Tap & navigate</div><p class="step-desc">Every restaurant, hotel and attraction is a clickable Google Maps link. Just tap and go.</p></div>
+    <div class="step s4"><div class="step-n">04</div><div class="step-icon">✈️</div><div class="step-title">Actually explore</div><p class="step-desc">Save money, find hidden spots, eat where locals eat. Travel smarter, not harder.</p></div>
+  </div>
+</section>
+
+<!-- WHAT'S INSIDE -->
+<section class="section" id="inside">
+  <div class="eyebrow ey-blue">Every guide includes</div>
+  <h2 class="sec-title">Not just a list.<br>A complete <span style="color:var(--green)">trip plan.</span></h2>
+  <div class="inside-grid">
+    <div class="inside-list">
+      <div class="inside-item"><div class="ii-icon i1">🗺️</div><div><div class="ii-title">Interactive Google Maps</div><div class="ii-desc">Every spot pinned and linked — tap to open. Hotels, food, sights, transport hubs all in one map.</div></div></div>
+      <div class="inside-item"><div class="ii-icon i2">📅</div><div><div class="ii-title">Hour-by-hour itinerary</div><div class="ii-desc">Morning, afternoon, evening — planned so you waste zero time figuring out what's next.</div></div></div>
+      <div class="inside-item"><div class="ii-icon i3">💰</div><div><div class="ii-title">Full budget breakdown</div><div class="ii-desc">Real costs for food, transport, accommodation and activities. No surprises when you land.</div></div></div>
+      <div class="inside-item"><div class="ii-icon i4">🍽️</div><div><div class="ii-title">Handpicked local restaurants</div><div class="ii-desc">The spots where locals actually eat — not the tourist traps on the main strip.</div></div></div>
+      <div class="inside-item"><div class="ii-icon i5">⚠️</div><div><div class="ii-title">Scam alerts & insider tips</div><div class="ii-desc">What to avoid, how to negotiate, and local customs that'll save you money and embarrassment.</div></div></div>
+    </div>
+    <div class="pdf-prev">
+      <div class="pdf-head">
+        <div class="pdf-brand">WanderWise · Budget Travel Guide</div>
+        <div class="pdf-htitle">10 Days in Bali<br>on a Shoestring</div>
+        <div class="pdf-hsub">34 pages · All links clickable · Offline ready</div>
+      </div>
+      <div class="pdf-body">
+        <div class="pdf-sec-label">Your itinerary — sample</div>
+        <div class="pdf-day"><div class="pdf-dot pd1"></div><div><div class="pdf-dtime">Day 1 · 7:00 AM</div><div class="pdf-dtitle">Sunrise at Tegallalang Rice Terraces</div><div class="pdf-dcost">FREE · Scooter hire: $5/day</div></div></div>
+        <div class="pdf-day"><div class="pdf-dot pd2"></div><div><div class="pdf-dtime">Day 1 · 10:00 AM</div><div class="pdf-dtitle">Ubud Monkey Forest & market</div><div class="pdf-dcost">$3 entry · Best prices 9–11am</div></div></div>
+        <div class="pdf-day"><div class="pdf-dot pd3"></div><div><div class="pdf-dtime">Day 2 · 6:30 AM</div><div class="pdf-dtitle">Mount Batur sunrise hike</div><div class="pdf-dcost">~$30 guide incl. breakfast</div></div></div>
+        <div class="pdf-day"><div class="pdf-dot pd4"></div><div><div class="pdf-dtime">Day 4 · All day</div><div class="pdf-dtitle">Seminyak Beach + sunset rooftop</div><div class="pdf-dcost">Beach FREE · Cocktails $4</div></div></div>
+      </div>
+      <div class="pdf-foot">
+        <span class="pdf-chip">🗺️ Maps linked</span><span class="pdf-chip">34 pages</span><span class="pdf-chip">Offline ready</span><span class="pdf-chip">⚠️ Scam guide</span><span class="pdf-chip">🛵 Scooter routes</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="section testi-bg" id="reviews">
+  <div class="eyebrow ey-green">Real travellers</div>
+  <h2 class="sec-title">They went.<br>They loved it.</h2>
+  <div class="testi-grid">
+    <div class="testi-card">
+      <div class="stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+      <p class="testi-text">"Used the Bali guide for my first solo trip. Ten days, everything went perfectly. The scooter route maps alone saved me hours. Worth every penny."</p>
+      <div class="testi-auth"><div class="testi-av av1">👩</div><div><div class="testi-name">Amara T.</div><div class="testi-trip">Bali Guide · Feb 2025</div></div></div>
+    </div>
+    <div class="testi-card">
+      <div class="stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+      <p class="testi-text">"The Japan guide is insane value. JR pass breakdown, which train to take, what to eat — all in one PDF. I referred to it every single day."</p>
+      <div class="testi-auth"><div class="testi-av av2">👨</div><div><div class="testi-name">James K.</div><div class="testi-trip">Japan Guide · Jan 2025</div></div></div>
+    </div>
+    <div class="testi-card">
+      <div class="stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+      <p class="testi-text">"Morocco without the scam stress! The haggling guide and medina map meant I actually felt confident walking around. Best travel purchase I've made."</p>
+      <div class="testi-auth"><div class="testi-av av3">👩</div><div><div class="testi-name">Priya R.</div><div class="testi-trip">Morocco Guide · Mar 2025</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="nl-section">
+  <div class="eyebrow" style="color:rgba(203,252,232,.7);justify-content:center;margin-bottom:14px;"><span style="width:18px;height:2px;background:rgba(203,252,232,.5);display:inline-block;border-radius:2px;"></span>&nbsp;Free weekly drops</div>
+  <h2 class="nl-title">Get travel hacks<br>every Sunday.</h2>
+  <p class="nl-sub">Flight deals, free attractions, packing lists. No spam. Unsubscribe any time.</p>
+  <div class="nl-form">
+    <input type="email" class="nl-input" placeholder="your@email.com">
+    <button class="nl-btn">Subscribe →</button>
+  </div>
+  <p class="nl-note">No spam · No selling your data · Just good travel tips</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="f-logo">🌿 WanderWise</div>
+      <p class="f-about">Budget travel guides for people who want to see the world without torching their bank account. Real trips, honest costs, no fluff.</p>
+    </div>
+    <div class="f-col"><h4>Guides</h4><ul><li><a href="#">Bali</a></li><li><a href="#">Japan</a></li><li><a href="#">Morocco</a></li><li><a href="#">Dubai</a></li><li><a href="#">Thailand</a></li><li><a href="#">View All →</a></li></ul></div>
+    <div class="f-col"><h4>Follow</h4><ul><li><a href="#">Instagram</a></li><li><a href="#">TikTok</a></li><li><a href="#">Newsletter</a></li><li><a href="#">Blog</a></li></ul></div>
+    <div class="f-col"><h4>Info</h4><ul><li><a href="#">About</a></li><li><a href="#">FAQ</a></li><li><a href="#">Refund Policy</a></li><li><a href="#">Contact</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 WanderWise. Made with ✈️ and a tight budget.</span>
+    <div class="socials"><a href="#" class="soc">📸</a><a href="#" class="soc">🎵</a><a href="#" class="soc">✉️</a></div>
+  </div>
+</footer>
+
+<script>
+const cur=document.getElementById('cur'),curR=document.getElementById('curR');
+document.addEventListener('mousemove',e=>{
+  cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';
+  setTimeout(()=>{curR.style.left=e.clientX+'px';curR.style.top=e.clientY+'px';},60);
+});
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.width='18px';cur.style.height='18px';curR.style.width='46px';curR.style.height='46px';});
+  el.addEventListener('mouseleave',()=>{cur.style.width='10px';cur.style.height='10px';curR.style.width='32px';curR.style.height='32px';});
+});
+document.querySelectorAll('.pill').forEach(p=>{
+  p.addEventListener('click',()=>{document.querySelectorAll('.pill').forEach(x=>x.classList.remove('active'));p.classList.add('active');});
+});
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}});
+});
+</script>
+</body>
+</html>
